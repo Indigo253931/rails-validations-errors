@@ -6,21 +6,21 @@
 <!-- framing the "why" in big-picture/real world examples -->
 *This workshop is important because:*
 
-Error-handling is a critical part of web development. One one hand developers need to ensure their applications validate input and raise errors appropriately. On the other hand it is also important design a good user experience for when these errors occur.
+Error-handling is a critical part of web development. On one hand, developers need to ensure their applications validate input and raise errors appropriately. On the other hand, it is also important to design a good user experience for when these errors occur.
 
 ### What are the objectives?
 <!-- specific/measurable goal for students to achieve -->
 *After this workshop, developers will be able to:*
 
-- Use built-in ActiveRecord validation methods to validate database entries.
-- Display errors in the view using Rails `flash` messages.
-- Set breakpoints to check your assumptions
+- **Use** built-in ActiveRecord validation methods to validate database entries.
+- **Display** errors in the view using Rails `flash` messages.
+- **Set** breakpoints to check your assumptions.
 
 ### Where should we be now?
 <!-- call out the skills that are prerequisites -->
 *Before this workshop, developers should already be able to:*
 
-- Construct a basic Rails application
+- **Construct** a basic Rails application
 
 ##Error Handling
 
@@ -28,7 +28,7 @@ Error-handling is a critical part of web development. One one hand developers ne
 
 Client-side validations ensure a good *user experience* by providing real-time, inline feedback on the user input. Server-side validations are **essential** for maintaining *database integrity*, especially if the client-side validations are ever compromised or purposely circumvented.
 
-Today we'll be focusing on server-side validations in Rails, using [Active Record Validations](http://guides.rubyonrails.org/active_record_validations.html).
+Today, we'll be focusing on server-side validations in Rails, using [Active Record Validations](http://guides.rubyonrails.org/active_record_validations.html).
 
 ##Airplane App
 
@@ -62,7 +62,7 @@ you'll get an error causing a `ROLLBACK`. Try, `Airplane.create(name: "747")`, w
 
 What if you call `Airplane.create!(name: "747")`?
 
-Alternatively, we can check any piece of data we are about to save with the `.valid?` method. So, instead if immediately calling`.create`. In that case, we can create a `.new` airplane instance in memory (without saving it to the database), then asking if it's `.valid?` before calling `.save`.
+Alternatively, we can check any piece of data we are about to save with the `.valid?` method. So, instead of immediately calling`.create`, we can create a `.new` airplane instance in memory (without saving it to the database), then ask if it's `.valid?` before calling `.save`.
 
 ```bash
 > airplane = Airplane.new(name: "747")
@@ -73,7 +73,7 @@ Alternatively, we can check any piece of data we are about to save with the `.va
 
 The [`.valid?`](http://guides.rubyonrails.org/active_record_validations.html#valid-questionmark-and-invalid-questionmark) method returns `true` if the new record passes the model validations and `false` if it fails any validations.
 
-Moreover, we can call [`.errors.full_messages`](http://guides.rubyonrails.org/active_record_validations.html#errors-add) to returns an array of user-friendly error messages, which is very useful and will be helpful for our user experience later.
+Moreover, we can call [`.errors.full_messages`](http://guides.rubyonrails.org/active_record_validations.html#errors-add) to return an array of user-friendly error messages, which is very useful and will be helpful for our user experience later.
 
 ```bash
 > airplane.errors.full_messages
@@ -186,7 +186,7 @@ We've just covered how to:
 * Display errors to the user
 * Set breakpoints in Rails
 
-For more chellenges, see the associated [lab](https://github.com/sf-wdi-29/rails-validations-errors-lab).
+For more chellenges, see the associated [lab](https://github.com/den-wdi-1/rails-validations-errors-lab).
 
 ## Resources
 
