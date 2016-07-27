@@ -1,5 +1,9 @@
 ![](https://ga-dash.s3.amazonaws.com/production/assets/logo-9f88ae6c9c3871690e33280fcf557f33.png)
 
+<!-- 1:00 10 minutes -->
+
+<!--Hook: Raise your hand if you've ever tried to fool a form by entering something like a@b.c for email, or 1234567890 for a phone number.  Raise your hand if you want people to do that on your site.  For those of you not raising your hand, let me give you a more concrete example.  The event planning app I'm working on with my friends has the ability to invite new people to events, that don't have an account, by email.  What happens if SendGrid sees 90% of our emails bouncing because some jerk was testing and put in a@b.c 1000 times?  That's the kind of thing we're going to try to resolve today, to make sure our data is clean, and as complete as we need it to be. -->
+
 #Error-Handling & Validations
 
 ### Why is this important?
@@ -22,6 +26,8 @@ Error-handling is a critical part of web development. On one hand, developers ne
 
 - **Construct** a basic Rails application
 
+<!--1:10 5 minutes -->
+
 ##Error Handling
 
 **The best error-handling strategy is a combination of both [client-side](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms/Data_form_validation) and server-side validations.**
@@ -30,13 +36,20 @@ Client-side validations ensure a good *user experience* by providing real-time, 
 
 Today, we'll be focusing on server-side validations in Rails, using [Active Record Validations](http://guides.rubyonrails.org/active_record_validations.html).
 
+<!-- 1:15 5 minutes -->
+
 ##Airplane App
 
 For the purposes of this workshop there is a Rails app, `airplane-app` inside the repo that demonstrates the below examples.
 
 The application was generated with: `rails new airplane-app -T -B -d postgresql` in order to prevent Rails from automatically creating tests (`-T`), prevent it from automatically bundling (`-B`), and set the database postgres (`-d postgresql`).
 
->Be sure to `bundle`, `rake db:create db:migrate db:seed`, and have postgres running before launching the application.
+<details>
+<summary>Setup instructions, if needed</summary>
+Be sure to `bundle`, `rake db:create db:migrate db:seed`, and have postgres running before launching the application.
+</details>
+
+<!--1:20 15 minutes -->
 
 ## Model Validations
 
@@ -80,13 +93,23 @@ Moreover, we can call [`.errors.full_messages`](http://guides.rubyonrails.org/ac
 => ["Name is too short (minimum is 6 characters)"]
 ```
 
-Let's look at how we can display the error messages to the user so they know what went wrong if their input doesn't pass our validations.
-
 ###Challenge: Duplicates
 
 Get the `airplane.errors.full_messages` to return `["Name has already been taken"]`
 
+###Challenge: Description Needed!
+
+Now add a new validation to make sure we have a `:description`.  It does not need to be unique, but it does need to be present, and as we all know any description smaller than 10 characters is boring, so make sure it is as big as that.  Test your validation in `rails console`.
+
+Now, let's look at how we can display the error messages to the user so they know what went wrong if their input doesn't pass our validations.
+
+<!--1:35 15 minutes -->
+
 ## Displaying Errors to the User
+
+>Note: run [`rake notes`](http://guides.rubyonrails.org/command_line.html#notes) for further guidance on where to add the below lines of code. 
+
+<!-- Half-mast -->
 
 In the `airplane-app` what currently happens when we try to submit invalid data to the database via the `airplanes#new` view?
 
@@ -101,7 +124,7 @@ Rails comes with a [flash hash](http://api.rubyonrails.org/classes/ActionDispatc
 Because we're trying to display an error message we get back from Active Record we can store the error message in the flash.
 
 ```ruby
-flash[:error] = airplane.errors.full_messages
+flash[:error] = @airplane.errors.full_messages
 ```
 
 Add the above line into `airplane#create` action, if the airplane isn't saved correctly and before the `:new` view is rendered again.
@@ -114,7 +137,7 @@ Add the above line into `airplane#create` action, if the airplane isn't saved co
     if @airplane.save
       redirect_to @airplane
     else
-      flash[:error] = airplane.errors.full_messages.join(" ")
+      flash[:error] = @airplane.errors.full_messages.join(" ")
       render :new
     end
   end
@@ -132,11 +155,15 @@ Just one last step! We've sent `flash` to the view, but we haven't rendered it y
 <%= yield %>
 ```
 
->Note: run [`rake notes`](http://guides.rubyonrails.org/command_line.html#notes) for further guidance on where to add the above lines of code. 
+###Challenge: Duplicates
+
+Get the `airplane.errors.full_messages` to return `["Name has already been taken"]`, but this time in the browser.
+
+<!--1:50 10 minutes -->
 
 ## Debugging
 
-Lastly there will be errors that crash your application that you need to catch and debug before they do so. This will require setting a break point in order for you to stop execution of the code and check your assumptions in a specific context. Let's discuss the preferred method to do so.
+Lastly, there will be errors that crash your application that you need to catch and debug before they do so. This will require setting a break point in order for you to stop execution of the code and check your assumptions in a specific context. Let's discuss the preferred method to do so.
 
 By default, Rails comes with the gem `byebug` loaded into the development & test environments. Anywhere in the code you can call `byebug`, which will set a breakpoint.
 
@@ -144,7 +171,7 @@ By default, Rails comes with the gem `byebug` loaded into the development & test
 
 ###Binding.pry
 
-This is great, but wouldn't it be so much better if we had a colorful, well indented console to work in?
+This is great, but wouldn't it be so much better if we had a colorful, well-indented console to work in?
 
 Let's swap out the gem `byebug` with `pry-byebug` and rebundle. Now we set breakpoints with `binding.pry` instead of `debugger`.
 
@@ -172,9 +199,13 @@ On a side note, note that anytime the application runs into an error, it loads u
 
 >Additionally we can load up the console manually by invoking `<% console %>` somewhere in a view; generally, at the bottom of `application.html.erb`.
 
+<!--2:00 5 minutes -->
+
 ###Challenge: 5 Minute Breakpoint
 
-Render a variable `@great_quote` onto the view but do **not** set it explicitly in the controller. Instead use `binding.pry` to hit breakpoint, set `@great_quote` to something nice, `continue`, then see it rendered to the page.
+Render a variable `@great_quote` onto the view but do **not** set it explicitly in the controller. Instead use `binding.pry` to hit the breakpoint, set `@great_quote` to something nice, `continue`, then see it rendered to the page.
+
+<!--2:05 5 minutes -->
 
 ## More Challenges
 
@@ -186,7 +217,7 @@ We've just covered how to:
 * Display errors to the user
 * Set breakpoints in Rails
 
-For more chellenges, see the associated [lab](https://github.com/den-wdi-1/rails-validations-errors-lab).
+For more challenges, see the associated [lab](https://github.com/den-wdi-1/rails-validations-errors-lab).
 
 ## Resources
 
