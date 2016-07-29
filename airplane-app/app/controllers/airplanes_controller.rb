@@ -1,5 +1,6 @@
 class AirplanesController < ApplicationController
   def index
+    binding.pry
     @airplanes = Airplane.all
   end
 
@@ -12,7 +13,7 @@ class AirplanesController < ApplicationController
     if @airplane.save
       redirect_to @airplane
     else
-      # TODO: store error messages in the flash hash
+     flash[:error] = @airplane.errors.full_messages # TODO: store error messages in the flash hash
       render :new
     end
   end
